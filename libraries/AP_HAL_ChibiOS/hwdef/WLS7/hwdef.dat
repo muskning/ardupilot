@@ -1,0 +1,131 @@
+# hw definition file for processing by chibios_hwdef.py
+# mRo Nexus CAN flight controller
+# A Dual CAN based flight controller / CAN IMU
+# 36mm x 36mm, 31.5mm x 31.5mm grommeted mounting holes
+# M10084
+
+# MCU class and specific type
+MCU STM32H7xx STM32H743xx
+
+# board ID for firmware load
+APJ_BOARD_ID 1186
+
+# crystal frequency
+OSCILLATOR_HZ 25000000
+
+FLASH_SIZE_KB 2048
+
+# with 2M flash we can afford to optimize for speed
+env OPTIMIZE -O2
+
+# start on 2th sector (1st sector for bootloader)
+FLASH_RESERVE_START_KB 128
+
+# USB setup
+USB_STRING_MANUFACTURER "WLS7"
+
+# LED
+#PB0 LED_BOOTLOADER OUTPUT HIGH
+
+# 定义输出低电平时LED点亮
+#define HAL_LED_ON 0
+
+# ChibiOS system timer
+STM32_ST_USE_TIMER 5
+
+# order of UARTs (and USB)
+SERIAL_ORDER OTG1 UART4 USART6 UART7 UART8 USART3
+
+# Now we define the pins that USB is connected on.
+PA11 OTG_FS_DM OTG1
+PA12 OTG_FS_DP OTG1
+define DEFAULT_SERIAL0_PROTOCOL SerialProtocol_MAVLink2
+define DEFAULT_SERIAL0_BAUD 115
+
+# These are the pins for SWD debugging with a STlinkv2 or black-magic probe.
+PA13 JTMS-SWDIO SWD
+PA14 JTCK-SWCLK SWD
+
+# USART1
+# PA9  USART1_TX USART1
+# PA10 USART1_RX USART1
+
+# USART2
+# PD5 USART2_TX USART2
+# PD6 USART2_RX USART2
+
+# USART3
+PB10 USART3_TX USART3
+PB11 USART3_RX USART3
+define DEFAULT_SERIAL5_PROTOCOL SerialProtocol_None
+define DEFAULT_SERIAL5_BAUD 115
+
+# UART4 MAVLink2
+PA0 UART4_TX UART4
+PA1 UART4_RX UART4
+define DEFAULT_SERIAL1_PROTOCOL SerialProtocol_MAVLink2
+define DEFAULT_SERIAL1_BAUD 115
+
+# UART5
+# PC12 UART5_TX UART5
+# PD2 UART5_RX UART5
+
+# USART6 485 推进器
+PC6 USART6_TX USART6
+PC7 USART6_RX USART6
+define DEFAULT_SERIAL2_PROTOCOL SerialProtocol_None
+define DEFAULT_SERIAL2_BAUD 115
+
+# UART7 485 左右
+PA15 UART7_TX UART7
+PA8 UART7_RX UART7
+define DEFAULT_SERIAL3_PROTOCOL SerialProtocol_None
+define DEFAULT_SERIAL3_BAUD 115
+
+# UART8 485 上下
+PE0 UART8_RX UART8
+PE1 UART8_TX UART8
+define DEFAULT_SERIAL4_PROTOCOL SerialProtocol_None
+define DEFAULT_SERIAL4_BAUD 115
+
+# RC input
+PI7 TIM8_CH3 TIM8 RCININT PULLUP LOW
+
+# Now setup the pins for the microSD card, if available.
+PC8  SDMMC1_D0 SDMMC1
+PC9  SDMMC1_D1 SDMMC1
+PC10 SDMMC1_D2 SDMMC1
+PC11 SDMMC1_D3 SDMMC1
+PC12 SDMMC1_CK SDMMC1
+PD2  SDMMC1_CMD SDMMC1
+
+# use last 2 pages for flash storage
+# H743 has 16 pages of 128k each
+STORAGE_FLASH_PAGE 14
+define HAL_STORAGE_SIZE 32768
+
+# no ADC driver
+define HAL_USE_ADC FALSE
+define STM32_ADC_USE_ADC1 FALSE
+define HAL_DISABLE_ADC_DRIVER TRUE
+
+# no compass
+define HAL_COMPASS_DEFAULT HAL_COMPASS_NONE
+define ALLOW_ARM_NO_COMPASS
+# no baro
+define HAL_BARO_ALLOW_INIT_NO_BARO
+
+# supports upto 8MBits/s
+CANFD_SUPPORTED 8
+
+# CAN IMU and GPS
+PI9  CAN1_RX CAN1
+PB9  CAN1_TX CAN1
+
+#up and down
+PB14    TIM12_CH1     TIM12 PWM(1) GPIO(65) NODMA
+PB15    TIM12_CH2     TIM12 PWM(2) GPIO(64) NODMA
+
+ENABLE_DFU_BOOT 1
+
+GPS1_TYPE

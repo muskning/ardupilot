@@ -1,0 +1,42 @@
+# hw definition file for processing by chibios_hwdef.py
+# mRo Nexus CAN flight controller bootloader
+# M10084
+
+# MCU class and specific type
+MCU STM32H7xx STM32H743xx
+
+# USB setup
+USB_STRING_MANUFACTURER "WLS7"
+
+# crystal frequency
+OSCILLATOR_HZ 25000000
+
+# board ID for firmware load
+APJ_BOARD_ID 1186
+
+FLASH_SIZE_KB 2048
+
+# bootloader is installed at zero offset
+FLASH_RESERVE_START_KB 0
+
+# the location where the bootloader will put the firmware
+# the H743 has 128k sectors
+FLASH_BOOTLOADER_LOAD_KB 128
+
+# define all 3 to make LED output White.
+PB0 LED_BOOTLOADER OUTPUT HIGH
+
+define HAL_LED_ON 0
+
+# order of UARTs (and USB)
+SERIAL_ORDER OTG1 USART3
+
+# USART3
+PB10 USART3_TX USART3
+PB11 USART3_RX USART3
+
+PA11 OTG_FS_DM OTG1
+PA12 OTG_FS_DP OTG1
+
+PA13 JTMS-SWDIO SWD
+PA14 JTCK-SWCLK SWD
